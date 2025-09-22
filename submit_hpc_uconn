@@ -1,0 +1,90 @@
+#!/bin/bash
+
+### General settings
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=kalin.kochnev@uconn.edu
+
+### Export all slurm environmental variables to the Matlab script
+#SBATCH --export=ALL
+
+### JOB SPECIFIC CONFIG
+#SBATCH --nodes=1
+#SBATCH --ntasks=126
+#SBATCH --time=84:00:00
+#SBATCH --job-name=yalmip
+#SBATCH --output=job_%A_task_%a.out
+
+#SBATCH --mem=490G
+#SBATCH --array=1-4%4
+
+### Enable/disable SLURM Job Array
+### ensure that index out of bounds does not occur within the code.
+
+### ME DEPARTMENT CONFIG
+#SBATCH --qos=me_epyc # alternative node
+
+### PARTITIONS
+###SBATCH --partition=debug
+###SBATCH --partition=general
+###SBATCH --partition=lo-core # This can be as long as 7 days
+
+### PRIORITY PARTITION
+#SBATCH --partition=priority
+#SBATCH --account=chl23026
+###SBATCH --qos=chl23026
+#SBATCH --constraint=epyc128 # This is optional
+
+# NOTE SLURM runs this script from the directory it was submitted.
+# Make sure you run this script at the top level, ~/fluidstability
+
+# Make sure that .env file is defined in same directory as this file
+if [ ! -f ".env" ]; then
+    echo ".env file was not found"
+    exit
+fi
+
+# Environment variables defined in `.env` are displayed for debugging
+# purposes here. The environmental variables are loaded in during 
+# configureDeps()
+echo "-------- .ENV VARIABLES --------"
+set -a
+source .env 
+set +a
+echo "--------------------------------"
+
+
+#export I_MPI_FABRICS=shm,tcp
+
+#the slurm number to restart simulation... This need full state to be stored.
+SUBMITDIR=$SLURM_SUBMIT_DIR
+WORKDIR=/scratch/chl23026/${USER_NETID}/job_${SLURM_ARRAY_JOB_ID}_task_${SLURM_ARRAY_TASK_ID} ##change the second chl23026 to your NetID
+
+# Initialize job directory by creating scratch folder and copying code
+# Exit process if WORKDIR is unavailable
+mkdir -p $WORKDIR/results
+cp -r experiments solvers utilities common .env $WORKDIR
+cd $WORKDIR/experiments || exit -1
+
+# Load modules necessary for job
+module load matlab/R2023b
+
+echo "Starting matlab script......"
+# matlab -nodisplay -nosplash -nodesktop -r "thermohaline_fig1b" # figure 1b Radko GRL
+matlab -nodisplay -nosplash -nodesktop -r "thermohaline_fig1a" # figure 1a Radko GRL
+
+# Copy the latest results to home directory for ease of access
+echo "------- MATLAB SCRIPT COMPLETE----------"
+echo "Current directory: $(pwd)" 
+mkdir -p $SUBMITDIR/latest_results/
+
+# At this point cwd is WORKDIR/experiments
+# Move results from local results to easily accessible folder
+cd $WORKDIR
+cp -r ../results/* $SUBMITDIR/latest_results/
+
+# Copy output log to scratch
+cd $SUBMITDIR && cp job_${SLURM_ARRAY_JOB_ID}_task_${SLURM_ARRAY_TASK_ID}.out $WORKDIR
+
+echo "Job completed!"
+
+

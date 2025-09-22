@@ -1,0 +1,19 @@
+{
+  "T": 12.566370614359172,
+  "n_steps": 2000,
+  "Ri": 2,
+  "Pr": 10,
+  "k": [],
+  "l": 0,
+  "f": 0,
+  "omega": 0.5,
+  "m0": [],
+  "Au": "@(t)au*cos(fparams.omega*t)",
+  "Av": "@(t)0",
+  "Bu": "@(t)(au/fparams.omega)*sin(fparams.omega*t)",
+  "Bv": "@(t)0",
+  "Rp": 2,
+  "tau": 0.01,
+  "solver": "FLOQUET",
+  "system": "RADKO_GRL"
+}
