@@ -1,0 +1,5 @@
+*.asv
+.env
+*.vim
+results/debug/
+local_data/
