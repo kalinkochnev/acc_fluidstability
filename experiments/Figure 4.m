@@ -1,10 +1,6 @@
-function convergence_experiment(k, m0, n_samples_start, n_samples_end, n_samples_step, save_name)
-% RUN_EXPERIMENT Run thermohaline experiment and save results to disk
-%
-%   run_experiment(start_range, end_range, step_size, save_name)
-%   Example:
-%       run_experiment(2, 300, 30, 'experiment1_results.mat')
-
+% Runs the data collection for the convergence of Lyapunov and Floquet method. It also
+% Evaluates ode45 for the same condition as a reference point.
+function convergence_experiment(k, m0, n_samples_start, n_samples_end, n_samples_step)
     close all;
     clc;
 
@@ -92,18 +88,19 @@ function convergence_experiment(k, m0, n_samples_start, n_samples_end, n_samples
     end
 
     % Save results into a struct
-    results = struct();
-    results.parameters = struct('k', k, 'm0', m0, 'omega', omega, ...
-                                'n_samples_start', n_samples_start, ...
-                                'n_samples_end', n_samples_end, ...
-                                'n_samples_step', n_samples_step, ...
-                                'n_random_inits', n_random_inits);
-    results.cvx_results = cvx_results;
-    results.floquet_results = floquet_results;
-    results.ode45_lambda = ode45_lambda;
+    %results = struct();
+    %results.parameters = struct('k', k, 'm0', m0, 'omega', omega, ...
+    %                            'n_samples_start', n_samples_start, ...
+    %                            'n_samples_end', n_samples_end, ...
+    %                            'n_samples_step', n_samples_step, ...
+    %                            'n_random_inits', n_random_inits);
+    %results.cvx_results = cvx_results;
+    %results.floquet_results = floquet_results;
+    %results.ode45_lambda = ode45_lambda;
 
-    save(save_name, 'results');
-    fprintf("\nExperiment completed. Results saved to %s\n", save_name);
+	writematrix(floquet_results, "floquet_convergence.csv")
+	writematrix(lyapunov_results, "lyapunov_convergence.csv")
+    fprintf("\nExperiment completed");
 end
 
-convergence_experiment(0.179, 3.01E-3, 2, 2000, 5, "../local_data/convergence.mat");
+convergence_experiment(0.179, 3.01E-3, 2, 2000, 5);

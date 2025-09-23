@@ -1,6 +1,4 @@
-% ----------------------------
 % This function sets up all parameters that are common across experiments.
-% ----------------------------
 function [fparams] = experiment1_common(fparams)
 	% see eq. 19 for values used
 	fparams.Ri = 2;
