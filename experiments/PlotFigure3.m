@@ -1,3 +1,5 @@
+% This file takes all the (k, m0) plots for each method and combines them into a single figure. 
+
 paths = {
 	"../Data/lyapunov_n=400.csv"
 	"../Data/lyapunov_n=600.csv"
@@ -51,7 +53,7 @@ end
 colormap("jet");
 cb = colorbar;
 cb.Layout.Tile = 'east';   % spans all plots
-cb.Label.String = '$\log_{10}(\lambda)$'; % optional colorbar label
+cb.Label.String = '$log_{10}(\lambda)$'; % optional colorbar label
 cb.Label.Interpreter = 'latex';
 cb.Label.FontSize = 20;
 
@@ -73,9 +75,5 @@ for i = 1:nFiles
     fprintf("\n");
 end
 
-
-
-
-% Save
-savefig(f, "./paper figures/heatmap_all.fig");
-print(f, "./paper figures/heatmap_all.png", "-dpng", "-r300");
+savefig(f, "../Figures/Figure3.fig");
+print(f, "../Figures/Figure3.png", "-dpng", "-r300");
