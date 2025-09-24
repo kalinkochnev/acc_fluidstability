@@ -1,6 +1,5 @@
-% Runs the data collection for the convergence of Lyapunov and Floquet method. It also
-% Evaluates ode45 for the same condition as a reference point.
 function convergence_experiment(k, m0, n_samples_start, n_samples_end, n_samples_step)
+
     close all;
     clc;
 
@@ -32,7 +31,7 @@ function convergence_experiment(k, m0, n_samples_start, n_samples_end, n_samples
 
     % Start parallel pool
     if isempty(gcp('nocreate'))
-        parpool(10); 
+        parpool(4); 
     end
 
     parfor i = 1:num_params
@@ -88,19 +87,18 @@ function convergence_experiment(k, m0, n_samples_start, n_samples_end, n_samples
     end
 
     % Save results into a struct
-    %results = struct();
-    %results.parameters = struct('k', k, 'm0', m0, 'omega', omega, ...
-    %                            'n_samples_start', n_samples_start, ...
-    %                            'n_samples_end', n_samples_end, ...
-    %                            'n_samples_step', n_samples_step, ...
-    %                            'n_random_inits', n_random_inits);
-    %results.cvx_results = cvx_results;
-    %results.floquet_results = floquet_results;
-    %results.ode45_lambda = ode45_lambda;
+    results = struct();
+    results.parameters = struct('k', k, 'm0', m0, 'omega', omega, ...
+                                'n_samples_start', n_samples_start, ...
+                                'n_samples_end', n_samples_end, ...
+                                'n_samples_step', n_samples_step, ...
+                                'n_random_inits', n_random_inits);
+    results.cvx_results = cvx_results;
+    results.floquet_results = floquet_results;
+    results.ode45_lambda = ode45_lambda;
 
-	writematrix(floquet_results, "floquet_convergence.csv")
-	writematrix(lyapunov_results, "lyapunov_convergence.csv")
-    fprintf("\nExperiment completed");
+    save(save_name, 'results');
+    fprintf("\nExperiment completed. Results saved to %s\n", save_name);
 end
 
-convergence_experiment(0.179, 3.01E-3, 2, 2000, 5);
+convergence_experiment(0.179, 3.01E-3, 2, 2000, 5, "../local_data/convergence.mat");
