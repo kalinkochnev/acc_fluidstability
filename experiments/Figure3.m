@@ -1,6 +1,3 @@
-% this file can generature figure 2 and 3. Figure 3 can be generated if you
-% call heatmapGrowthRate(). Figure 2 can be generated if you call
-% ode45Singlekm0Plot().
 close all;
 clear all;
 clc;
@@ -86,32 +83,8 @@ fprintf("Size: %d x %d\n", length(k), length(m0));
 fparams.jsonencode()
 % Plot the heatmap for varying initial conditions
 lambda_mat=heatmapGrowthRate(fparams, default_debug_struct(fparams), growthRateFunc, k, m0, output_file_name);
-%ode45Singlekm0Plot(fparams, 0.179, 3.01E-3);
-
-% Plot for a single initial condition using ode45
-function ode45Singlekm0Plot(params, k, m0)
-    [debug, log10lambda] = ode45GrowthRate(params, k, m0)
-    debug
-    t = debug.t;
-
-    % Create a new x axis with exactly 1000 points (or whatever you want).
-    xFit = linspace(min(t), max(t), length(t));
-
-    % % Get the estimated yFit value for each of those 1000 new x locations.
-    yFit = polyval(debug.coefficients, xFit);
-    plot(xFit, yFit, 'r-', 'LineWidth', 2); % Plot fitted line.
-    grid on;
 
 
-    data{1}.x=debug.t;
-    data{1}.y=0.5*log(debug.quadratic_norms);
-    data{2}.x=xFit;
-    data{2}.y=yFit;
-    plot_config.xlim_list=[1,0,1000];
-    plot_config.label_list={1,'$t$','$ln(e)/2$'};
-    plot_config.linewidth=6;
-    plot_line(data,plot_config);
-end
 
 function [debug, log10lambda] = ode45GrowthRate(params, x, y) 
     params.k = x;

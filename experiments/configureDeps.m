@@ -7,7 +7,6 @@ function configureDeps()
     fprintf("(1) Adding utilities and solvers to matlab path...");
     % include utilities from directory above this 
     addpath('../utilities');
-	addpath('../common');
 
     % include solvers from directory above this 
     addpath('../solvers');
