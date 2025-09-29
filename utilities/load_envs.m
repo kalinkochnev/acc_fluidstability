@@ -61,9 +61,6 @@ function load_envs(enable)
             case 'RADKO_GRL'
                 FLUID_SYSTEM = SystemSelect.RADKO_GRL;
                 disp("FLUID_SYSTEM=RADKO_GRL");
-            case 'RADKO_SHEAR_INSTABILITY'
-                FLUID_SYSTEM = SystemSelect.RADKO_SHEAR_INSTABILITY;
-                disp("FLUID_SYSTEM=RADKO_SHEAR_INSTABILITY");
 
             case 'UNSELECTED'
                 disp("ERROR: FLUID_SYSTEM is required but unselected.");

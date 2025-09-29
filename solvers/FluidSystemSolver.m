@@ -12,8 +12,6 @@ classdef FluidSystemSolver < handle
             switch obj.params.SYSTEM
                 case SystemSelect.RADKO_GRL
                     obj.sysSize = 5;
-                case SystemSelect.RADKO_SHEAR_INSTABLITY
-                    obj.sysSize = 4;
             end
         end
 
@@ -63,27 +61,6 @@ classdef FluidSystemSolver < handle
 
                     % in 2D model v=0 so make 4th column zeros
                     M(:, 4) = 0;
-
-                case SystemSelect.RADKO_SHEAR_INSTABLITY
-                    M(1, 1, t_ind) = -c;
-                    M(1, 2, t_ind) = 0;
-                    M(1, 3, t_ind) = 0;
-                    M(1, 4, t_ind) = 1;
-                    M(2, 1, t_ind) = param.Pr * param.k * m / c;
-                    M(2, 2, t_ind) = (param.f * param.k * param.l / c) - param.Pr * c;
-                    % for simple case velocity is 0: 
-                    M(2, 3, t_ind) = param.f - (param.f * param.k^2 / c);
-                    M(2, 4, t_ind) = (param.k^2 * param.Au(t) + param.k * param.l * param.Av(t))/c - param.Au(t);
-                    M(3, 1, t_ind) = param.Pr*param.l*m / c;
-                    M(3, 2, t_ind) = (param.f*param.l^2)/c - param.f;
-                    % for simple case velocity is 0: 
-                    M(3, 3, t_ind) = -param.Pr*c + (-param.f*param.k*param.l)/c; %second term should add minus sign
-                    M(3, 4, t_ind) = (param.k*param.l*param.Au(t) + param.l^2 *param.Av(t))/c - param.Av(t);
-                    M(4, 1, t_ind) = param.Pr*(m^2/c - 1);
-                    M(4, 2, t_ind) = param.f*param.l*m/c;
-                    % for simple case velocity is 0: 
-                    M(4, 3, t_ind) = -param.f*param.k*m/c;
-                    M(4, 4, t_ind) = (param.k*m*param.Au(t) + param.l*m*param.Av(t))/c - param.Pr*c;
             end
         end
 
@@ -241,15 +218,6 @@ classdef FluidSystemSolver < handle
                             S = y(ind, 2);
 
                             quadratic_norm(ind) = (abs(u)^2 + abs(v)^2 + abs(w)^2)/4 + param.Pr * abs(S-T)^2 / (4 * (obj.params.Rp - 1));
-
-                        case SystemSelect.RADKO_SHEAR_INSTABLITY
-                            u = y(ind, 2);
-                            v = y(ind, 3);
-                            w = y(ind, 4);
-                            rho = y(ind, 1);
-
-                            % (|u|^2 + |v|^2 + |w|^2)/4  + Pr*|rho|^2/4
-                            quadratic_norm(ind) = (abs(u)^2 + abs(v)^2 + abs(w)^2)/4 + param.Pr * abs(rho)^2 / 4;
                     end
                 end
 
