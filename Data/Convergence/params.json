@@ -1,1 +1,1 @@
-{"k":0.179,"m0":0.00301,"omega":0.5,"n_samples_start":2,"n_samples_end":2000,"n_samples_step":5,"n_random_inits":50, "ode45_lambda": 0.0699}
+{"parameters":{"k":0.179,"m0":0.00301,"omega":0.5,"n_samples_start":2,"n_samples_end":2000,"n_samples_step":20,"n_random_inits":50},"ode45_lambda":0.098256910451042789}

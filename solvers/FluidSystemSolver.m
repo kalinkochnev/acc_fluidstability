@@ -47,19 +47,19 @@ classdef FluidSystemSolver < handle
                     M(3, 3, t_ind) = (param.f * param.k * param.l / c) - param.Pr * c;
                     % for simple case velocity is 0: 
                     M(3, 4, t_ind) = param.f - (param.f * param.k^2 / c);
-                    M(3, 5, t_ind) = (param.k^2 * param.Au(t) + param.k * param.l * param.Av(t))/c - param.Au(t);
+                    M(3, 5, t_ind) = 2* (param.k^2 * param.Au(t) + param.k * param.l * param.Av(t))/c - param.Au(t);
 
                     M(4, 1, t_ind) = -param.Pr*param.l*m / c;
                     M(4, 2, t_ind) = param.Pr*param.l*m / c;
                     M(4, 3, t_ind) = (param.f*param.l^2)/c - param.f;
                     M(4, 4, t_ind) = -param.Pr*c - (param.f*param.k*param.l)/c;
-                    M(4, 5, t_ind) = (param.k*param.l*param.Au(t) + param.l^2 *param.Av(t))/c - param.Av(t);
+                    M(4, 5, t_ind) = 2* (param.k*param.l*param.Au(t) + param.l^2 *param.Av(t))/c - param.Av(t);
 
                     M(5, 1, t_ind) = -param.Pr*(m^2/c - 1);
                     M(5, 2, t_ind) = param.Pr*(m^2/c - 1);
                     M(5, 3, t_ind) = param.f*param.l*m/c;
                     M(5, 4, t_ind) = -param.f*param.k*m/c;
-                    M(5, 5, t_ind) = (param.k*m*param.Au(t) + param.l*m*param.Av(t))/c - param.Pr*c;
+                    M(5, 5, t_ind) = 2* (param.k*m*param.Au(t) + param.l*m*param.Av(t))/c - param.Pr*c;
 
                     % in 2D model v=0 so make 4th column zeros
                     M(:, 4) = 0;

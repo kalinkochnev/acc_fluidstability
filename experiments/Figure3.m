@@ -21,7 +21,7 @@ load_envs(load_env_file);
 fprintf("-------------- Experiment Initialization ---------------\n");
 
 % Order of arguments: (# cores for HPC, # samples in wavenumber for HPC, # cores local development, # samples in wavenumber local)
-n_samples = config_pool(126, 126, 2, 126);
+n_samples = config_pool(126, 126, 2, 30);
 
 % If SLURM_ARRAY_TASK_ID is defined, use that to determine number of sampled time_steps
 %n_samples = 1;

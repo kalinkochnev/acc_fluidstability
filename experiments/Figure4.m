@@ -31,7 +31,7 @@ function convergence_experiment(k, m0, n_samples_start, n_samples_end, n_samples
 
     % Start parallel pool
     if isempty(gcp('nocreate'))
-        parpool(4); 
+        parpool(2); 
     end
 
     parfor i = 1:num_params
@@ -70,7 +70,7 @@ function convergence_experiment(k, m0, n_samples_start, n_samples_end, n_samples
     % Solve with ode45 for large number of samples
     disp("Evaluating numerical simulation...");
     n_random_inits = 50;
-    fparams = FluidSystemData(50*2*pi/omega, 1500); % For ODE45
+    fparams = FluidSystemData(50*2*pi/omega, 2000); % For ODE45
     fparams = experiment1_common(fparams);
     fparams.omega = omega;
     fparams.m0 = m0;
@@ -97,8 +97,7 @@ function convergence_experiment(k, m0, n_samples_start, n_samples_end, n_samples
     results.floquet_results = floquet_results;
     results.ode45_lambda = ode45_lambda;
 
-    save(save_name, 'results');
-    fprintf("\nExperiment completed. Results saved to %s\n", save_name);
+    save("convergence.mat", 'results');
 end
 
-convergence_experiment(0.179, 3.01E-3, 2, 2000, 5, "../local_data/convergence.mat");
+convergence_experiment(0.179, 3.01E-3, 2, 40, 5);
