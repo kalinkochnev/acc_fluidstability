@@ -161,7 +161,7 @@ classdef FluidSystemSolver < handle
 
 			%compute fundamental solution matrix
 			Phi=eye(obj.sysSize, obj.sysSize);
-			for t_ind=1:length(t_list)
+			for t_ind=1:length(t_list)-1
 				t=t_list(t_ind);
 
 				% Have temporary matrix to store
