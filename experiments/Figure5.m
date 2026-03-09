@@ -45,7 +45,8 @@ fig1 = figure;
 lineStyles = {'b-', 'r--', 'k-', 'm--'};   % 'solid' → '-', '..' → ':'
 
 % Subplot 1: Eigenvector components
-set(gca, 'FontSize', 14);
+font_size = 20;
+set(gca, 'FontSize', font_size);
 grid on;
 for r = 1:n_vars-1
     hold on;
@@ -67,9 +68,8 @@ ylabel('Eigenvector Component','Interpreter','latex')
 print(fig1, 'Figure5.png', '-dpng', '-r300');
 
 % Subplot 2: Eigenvalues
-% Subplot 2: Eigenvalues
 fig2 = figure;
-set(gca, 'FontSize', 14);
+set(gca, 'FontSize', font_size);
 
 % First eigenvalue line in black
 plot(tvals, D(1,:), 'k-', 'LineWidth', 1.5);
@@ -92,14 +92,20 @@ fparams = experiment1_common();
 
 yyaxis right
 ax = gca;
-set(ax, 'FontSize', 14);
+set(ax, 'FontSize', font_size);
 ax.YColor = "blue";
 plot(tvals, fparams.Au(tvals), '-.', 'LineWidth', 1.5, 'Color', ax.YColor);
 ylabel('$A_U (t)$','Interpreter','latex')
 
 %legend({'$\lambda_1$','','$\lambda_3$','$\lambda_4$','$\lambda_5$','$A_U(t)$'}, ...       'Interpreter','latex','Location','best')
-legend({'$\lambda_1$', '$\lambda_2$', '$A_U(t)$'}, ...
-       'Interpreter','latex','Location','best')
+lgd2 = legend({'$\mu_1[{\mbox{\boldmath $P$}(t)}]$', ...
+        '$\mu_2[{\mbox{\boldmath $P$}(t)}]$', ...
+         '$A_U(t)$',         }, ...
+       'Interpreter','latex','Location','northeast')
 
+pos2 = lgd2.Position;     % [x y width height]
+pos2(1) = pos2(1) - 0.10;
+lgd2.Position = pos2;
 
-%print(fig2, 'Figure5.png', '-dpng', '-r300', '-loose');
+print(fig1, 'Figure5_eigenvec.png', '-dpng', '-r300', '-loose');
+print(fig2, 'Figure5_eigenval.png', '-dpng', '-r300', '-loose');
